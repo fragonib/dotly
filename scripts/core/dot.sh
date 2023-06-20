@@ -1,17 +1,17 @@
 dot::list_contexts() {
-	dotly_contexts=$(ls "$DOTLY_PATH/scripts")
 	dotfiles_contexts=$(ls "$DOTFILES_PATH/scripts")
+  dotly_contexts=$(ls "$DOTLY_PATH/scripts" | grep -v core)
 
-	echo "$dotly_contexts" "$dotfiles_contexts" | grep -v core | sort -u
+  echo "$dotfiles_contexts" "$dotly_contexts" | sort -u
 }
 
 dot::list_context_scripts() {
 	context="$1"
 
-	dotly_scripts=$(ls -p "$DOTLY_PATH/scripts/$context" 2>/dev/null | grep -v '/')
-	dotfiles_scripts=$(ls -p "$DOTFILES_PATH/scripts/$context" 2>/dev/null | grep -v '/')
+  dotfiles_scripts=$(ls -p "$DOTFILES_PATH/scripts/$context" 2>/dev/null | grep -v '/')
+  dotly_scripts=$(ls -p "$DOTLY_PATH/scripts/$context" 2>/dev/null | grep -v '/')
 
-	echo "$dotly_scripts" "$dotfiles_scripts" | sort -u
+  echo "$dotfiles_contexts" "$dotly_scripts" | sort -u
 }
 
 dot::list_scripts() {
@@ -25,8 +25,8 @@ dot::list_scripts() {
 }
 
 dot::list_scripts_path() {
-	dotly_contexts=$(find "$DOTLY_PATH/scripts" -maxdepth 2 -perm /+111 -type f | grep -v "$DOTLY_PATH/scripts/core")
-	dotfiles_contexts=$(find "$DOTFILES_PATH/scripts" -maxdepth 2 -perm /+111 -type f)
+  dotfiles_contexts=$(find "$DOTFILES_PATH/scripts" -maxdepth 2 -perm /+111 -type f)
+  dotly_contexts=$(find "$DOTLY_PATH/scripts" -maxdepth 2 -perm /+111 -type f | grep -v "$DOTLY_PATH/scripts/core")
 
-	printf "%s\n%s" "$dotly_contexts" "$dotfiles_contexts" | sort -u
+  printf "%s\n%s" "$dotfiles_contexts" "$dotly_contexts" | awk -F"/" '!seen[$(NF-1),$NF]++' | sort
 }
