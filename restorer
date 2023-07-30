@@ -208,6 +208,9 @@ if [[ ! -d $DOTFILES_PATH ]]; then
 			_q "📦 Which is your github repository? [dotfiles]" "GITHUB_REPOSITORY_NAME"
 			GITHUB_REPOSITORY_NAME="${GITHUB_REPOSITORY_NAME:-dotfiles}"
 
+			_q "🌴 Which is your repository branch? [main]" "GIT_BRANCH"
+			GIT_BRANCH="${GIT_BRANCH:-main}"
+
 			GIT_URL="git@github.com:$GITHUB_USER/$GITHUB_REPOSITORY_NAME.git"
 			GIT_URL_MIRROR="https://github.com/$GITHUB_USER/$GITHUB_REPOSITORY_NAME.git"
 			_w "  Remember that if your dotfiles repository is private you"
@@ -265,16 +268,16 @@ if [[ ! -d $DOTFILES_PATH ]]; then
 
 	# Recovering your files
 	_w "Installing your dotfiles from $opt"
-	_a "Attemping: git clone ${GIT_URL} ${DOTFILES_PATH}"
+	_a "Attemping: git clone -b ${GIT_BRANCH} ${GIT_URL} ${DOTFILES_PATH}"
 	is_cloned=false
-	git clone "${GIT_URL}" "${DOTFILES_PATH}" 2>&1 | _log "Cloning from $GIT_URL" && is_cloned=true
+	git clone -b "${GIT_BRANCH}" "${GIT_URL}" "${DOTFILES_PATH}" 2>&1 | _log "Cloning from $GIT_URL" && is_cloned=true
 
 	# This because maybe you do not have yet your ssh-keys because you did not download
 	# your dotfiles. And SSH URL for repository would be the default method using a
 	# repository that you can write.
 	if ! $is_cloned && [[ ! -d $DOTFILES_PATH ]] && [[ $opt == "GitHub" ]]; then
-		_a "Attemping: git clone ${GIT_URL_MIRROR} ${DOTFILES_PATH}"
-		git clone "$GIT_URL_MIRROR" "$DOTFILES_PATH" 2>&1 | _log "Cloning from $GIT_URL_MIRROR" && is_cloned=true
+		_a "Attemping: git clone -b ${GIT_BRANCH} ${GIT_URL_MIRROR} ${DOTFILES_PATH}"
+		git clone -b "${GIT_BRANCH}" "$GIT_URL_MIRROR" "$DOTFILES_PATH" 2>&1 | _log "Cloning from $GIT_URL_MIRROR" && is_cloned=true
 
 		if $is_cloned; then
 			_s "Dotfiles restored."
