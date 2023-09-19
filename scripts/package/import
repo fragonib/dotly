@@ -16,6 +16,8 @@ output::write "🎩 Let's import your packages (this could take a while)"
 
 platform::command_exists brew && output::header "Importing Brew apps from $HOMEBREW_DUMP_FILE_PATH" && package::brew_import
 
+platform::command_exists asdf && output::header "Importing Asdf apps from $ASDF_DUMP_FILE_PATH" && package::asdf_import
+
 platform::command_exists apt-mark && output::header "Importing Apt apps from $APT_DUMP_FILE_PATH" && package::apt_import
 
 platform::command_exists snap && output::header "Importing Snap apps from $SNAP_DUMP_FILE_PATH" && package::snap_import
@@ -31,7 +33,5 @@ elif platform::command_exists npm; then
 fi
 
 platform::command_exists winget.exe && output::header "Importing Winget apps from $WINGET_DUMP_FILE_PATH" && package::winget_import
-
-platform::command_exists asdf && output::header "Importing Asdf apps from $ASDF_DUMP_FILE_PATH" && package::asdf_import
 
 output::solution 'All packages imported'

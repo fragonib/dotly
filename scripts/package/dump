@@ -19,6 +19,8 @@ docs::parse "$@"
 
 platform::command_exists brew && package::brew_dump && output::answer "Brew apps dumped on $HOMEBREW_DUMP_FILE_PATH"
 
+platform::command_exists asdf && package::asdf_dump && output::answer "Asdf SDKs dumped on $ASDF_DUMP_FILE_PATH"
+
 platform::command_exists apt-mark && package::apt_dump && output::answer "Apt apps dumped on $APT_DUMP_FILE_PATH"
 
 platform::command_exists snap && package::snap_dump && output::answer "Snap apps dumped on $SNAP_DUMP_FILE_PATH"
@@ -34,7 +36,5 @@ elif platform::command_exists npm; then
 fi
 
 platform::command_exists winget.exe && package::winget_dump && output::answer "Windows apps dumped on $WINGET_DUMP_FILE_PATH"
-
-platform::command_exists asdf && package::asdf_dump && output::answer "asdf SDKs dumped on $ASDF_DUMP_FILE_PATH"
 
 output::write 'All packages dumped'

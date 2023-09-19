@@ -144,17 +144,17 @@ package::asdf_dump() {
 package::asdf_import() {
   if [ -f "$ASDF_DUMP_FILE_PATH" ]; then
     for plug in $(cat $ASDF_DUMP_FILE_PATH | awk '{ print $1 }' | uniq); do
-      echo "asdf plugin-add $plug"
+      asdf plugin-add $plug
     done
     while read -r line; do
       plug=$(echo $line | awk '{print $1; }')
       ver=$(echo $line | awk '{print $2; }')
       if [[ $ver == \** ]]; then
         ver=${ver:1}
-        echo "asdf install $plug $ver"
-        echo "asdf global $plug $ver"
+        asdf install $plug $ver
+        asdf global $plug $ver
       else
-        echo "asdf install $plug $ver"
+        asdf install $plug $ver
       fi
     done <$ASDF_DUMP_FILE_PATH
   fi
